@@ -1,4 +1,4 @@
-name: Dev43
+name: Test
 on:
   repository_dispatch:
     types: [test-command]
@@ -6,14 +6,16 @@ on:
 jobs:
   parse-args:
     outputs:
-      verb: ${{ steps.so.outputs.verb }}
-      verb2: ${{ steps.so.outputs.verb2 }}
+      use-pr-artifacts: ${{ steps.set-output.outputs.use-pr-artifacts}}
     runs-on: ubuntu-latest
     steps:
       - name: set vars
         run: echo "use-pr-artifacts=${{ github.event.client_payload.slash_command.args.named.update-services || github.event.client_payload.slash_command.args.unnamed.arg2 == 'changes' }}" >> $GITHUB_ENV
       - name: set output
+        id: set-output
         run: echo "use-pr-artifacts=${{ env.use-pr-artifacts }}" >> $GITHUB_OUTPUT
+      - name: show output
+        run: echo "use-pr-artifacts=${{ steps.set-output.outputs.use-pr-artifacts }}"
 
   show-args:
     needs: [parse-args]
