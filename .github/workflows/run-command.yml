@@ -1,0 +1,20 @@
+name: Slash Command Dispatch
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  slashCommandDispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Slash Command Dispatch
+        uses: peter-evans/slash-command-dispatch@v3.0.1
+        with:
+          config: >
+            [
+              {
+                "command": "test",
+                "permission": "none",
+                "issue_type": "pull-request",
+                "repository": "jonbeller/slash-command-test"
+              }
+            ]

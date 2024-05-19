@@ -1,0 +1,25 @@
+name: Dev43
+on:
+  repository_dispatch:
+    types: [test-command]
+
+jobs:
+  parse-args:
+    outputs:
+      verb: ${{ steps.so.outputs.verb }}
+      verb2: ${{ steps.so.outputs.verb2 }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: set vars
+        run: echo "use-pr-artifacts=${{ github.event.client_payload.slash_command.args.named.update-services || github.event.client_payload.slash_command.args.unnamed.arg2 == 'changes' }}" >> $GITHUB_ENV
+      - name: set output
+        run: echo "use-pr-artifacts=${{ env.use-pr-artifacts }}" >> $GITHUB_OUTPUT
+
+  show-args:
+    needs: [parse-args]
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo env
+        run: echo "env.use-pr-artifacts=${{ env.use-pr-artifacts }}"
+      - name: echo output
+        run: echo "parse-args.output.use-pr-artifacts=${{ needs.parse-args.outputs.use-pr-artifacts }}"
