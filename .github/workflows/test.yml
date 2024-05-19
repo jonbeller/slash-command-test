@@ -21,7 +21,5 @@ jobs:
     needs: [parse-args]
     runs-on: ubuntu-latest
     steps:
-      - name: echo env
-        run: echo "env.use-pr-artifacts=${{ env.use-pr-artifacts }}"
       - name: echo output
         run: echo "parse-args.output.use-pr-artifacts=${{ needs.parse-args.outputs.use-pr-artifacts }}"
